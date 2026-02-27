@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>snake & ladder – flat 2D board</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .board-panel {
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid #b4915c;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(10, 60px);
+            grid-template-rows: repeat(10, 60px);
+            gap: 2px;
+            padding: 6px;
+            border-radius: 12px;
+        }
+
+        .cell {
+            background-color: #fcf5e6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-weight: bold;
+            border: 1px solid #ab8b58;
+        }
+
+        .number {
+            font-size: 16px;
+            font-weight: 800;
+            color: #1e3d1e;
+            background: #f2e5ca;
+            padding: 0px 5px;
+            border-radius: 5px;
+            border: 1px solid #7b623e;
+            min-width: 28px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .symbol {
+            font-size: 24px;
+            line-height: 1;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: -2px;
+        }
+
+        .cell.start {
+            background-color: #c5e0b4;
+            border: 2px solid #267326;
+        }
+
+        .cell.end {
+            background-color: #f6d5ac;
+            border: 2px solid #cc7a1f;
+        }
+    </style>
+</head>
+<body>
+    <div class="board-panel">
+        <div class="grid" id="boardGrid"></div>
+    </div>
+
+    <script>
+        (function() {
+            const grid = document.getElementById('boardGrid');
+            const rows = 10;
+            const cols = 10;
+
+            const ladderCells = [3,6,11,15,17,21,24,34,45,54,62,64,71,80,87,93];
+            const snakeCells = [8,13,19,25,32,41,48,56,61,72,84,92,98];
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    let number;
+                    if (r % 2 === 0) {
+                        number = 100 - (r * 10) - c;
+                    } else {
+                        number = 100 - (r * 10) - (9 - c);
+                    }
+
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+
+                    if (number === 1) cell.classList.add('start');
+                    if (number === 100) cell.classList.add('end');
+
+                    const numberSpan = document.createElement('div');
+                    numberSpan.className = 'number';
+                    numberSpan.textContent = number;
+                    cell.appendChild(numberSpan);
+
+                    const symbolDiv = document.createElement('div');
+                    symbolDiv.className = 'symbol';
+
+                    if (ladderCells.includes(number)) {
+                        symbolDiv.textContent = '🪜';
+                    } else if (snakeCells.includes(number)) {
+                        symbolDiv.textContent = '🐍';
+                    } else {
+                        symbolDiv.textContent = '';
+                        symbolDiv.style.height = '26px';
+                    }
+
+                    cell.appendChild(symbolDiv);
+                    grid.appendChild(cell);
+                }
+            }
+        })();
+    </script>
+</body>
+</html>
